@@ -1,0 +1,55 @@
+* INTRODUCTION
+
+This is a simple Python utility for logging data from a [[https://www.wattsupmeters.com/secure/products.php?pn=0&wai=384&more=4][Watts Up? Pro]]
+power meter.  Documentation for the serial port interface for the
+meter is available in [[https://www.wattsupmeters.com/secure/downloads/CommunicationsProtocol090824.pdf][this PDF file]].
+
+Other software capable of logging data on the Watts Up? meter are
+available for [[https://www.wattsupmeters.com/secure/support.php][download from watts up?]], and they sell a [[https://orders.wattsupmeters.com/store/home.php?cat=26][realtime version
+for Windows]] for $72.95. One example I found of reading from the Watts
+Up? Pro in Python was [[http://www.wattzon.com/forums/posts/80][this script]].
+
+The program will by default assume the most common device name for
+Linux and OS X platforms, but the serial port device can also be
+specified with the command line option ~-p~.
+
+The Watts Up? Pro uses an FTDI serial to USB adapter internally.  If
+the driver is not already installed on your operating system, download
+the latest driver from the [[http://www.ftdichip.com/Drivers/VCP.htm][FTDI website]].
+
+* USAGE
+
+Basic usage from the command line:
+
+To log realtime data at the default sample rate (1 s) to the file
+~sample.log~, use
+: wattsup.py -l -o sample.log
+
+A basic realtime plot can be added to the above with
+: wattsup.py -l -g -o sample.log
+(requires numpy and matplotlib).
+
+Full description of options will be given by
+: wattsup -h
+
+* TODO
+** Fetching data from internal storage is not yet working
+** Plotting is currently very rudimentary.  Some things to add:
+*** Better autoranging
+*** Options for plotting power, current, or both
+*** Cumulative display or plot of energy used
+** A more graceful exit from realtime logging than Control-C would be desirable
+
+* LICENSE
+
+These programs are free software: you can redistribute them and/or
+modify them under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.  A copy of the GPL
+version 3 license can be found in the file COPYING or at
+[[http://www.gnu.org/licenses]].
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
