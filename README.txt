@@ -2,20 +2,14 @@
                                 ======
 
 Author: Kelsey Jordahl
-Date: 2011-09-04 13:01:43 EDT
+Date: 2011-09-06 07:29:15 EDT
 
 
 Table of Contents
 =================
 1 INTRODUCTION 
 2 USAGE 
-3 
-    3.1 Fetching data from internal storage is not yet working 
-    3.2 Plotting is currently very rudimentary.  Some things to add: 
-        3.2.1 Better autoranging 
-        3.2.2 Options for plotting power, current, or both 
-        3.2.3 Cumulative display or plot of energy used 
-    3.3 A more graceful exit from realtime logging than Control-C would be desirable 
+3 TO DO 
 4 LICENSE 
 
 
@@ -62,26 +56,14 @@ wattsup.py -l -g -o sample.log
 Full description of options will be given by
 wattsup -h
 
-3 TODO  
+3 TO DO 
 --------
 
-3.1 Fetching data from internal storage is not yet working 
-===========================================================
-
-3.2 Plotting is currently very rudimentary.  Some things to add: 
-=================================================================
-
-3.2.1 Better autoranging 
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-3.2.2 Options for plotting power, current, or both 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-3.2.3 Cumulative display or plot of energy used 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-3.3 A more graceful exit from realtime logging than Control-C would be desirable 
-=================================================================================
+- Fetching data from internal storage is not yet working
+- Plotting is currently very rudimentary.  Some things to add include:
+  - Better autoranging
+  - Options for plotting power, current, or both
+  - Cumulative display or plot of energy used
 
 4 LICENSE 
 ----------
