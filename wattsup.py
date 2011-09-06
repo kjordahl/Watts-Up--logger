@@ -11,7 +11,7 @@ Usage: wattsup.py
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Sun Sep  4 12:51:27 EDT 2011>
+Time-stamp: <Tue Sep  6 07:26:05 EDT 2011>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -30,6 +30,7 @@ Time-stamp: <Sun Sep  4 12:51:27 EDT 2011>
 import os, serial
 import datetime
 import argparse
+import curses
 from platform import uname
 import numpy as np
 import matplotlib.pyplot as plt
@@ -74,38 +75,60 @@ class WattsUp(object):
             o = open(self.logfile,'w')
         line = self.s.readline()
         n = 0
+        # set up curses
+        screen = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+        screen.nodelay(1)
+        try:
+            curses.curs_set(0)
+        except:
+            pass
         if args.plot:
             fig = plt.figure()
-        #    ax = fig.add_subplot(111)
-        #    line1, = ax.plot(0, 0, 'r-')
         while True:
             if line.startswith( '#d' ):
-                if args.debug:
-                    print line
                 fields = line.split(',')
-                W = float(fields[3]) / 10;
-                V = float(fields[4]) / 10;
-                A = float(fields[5]) / 1000;
-                if args.verbose:
-                    print datetime.datetime.now(), n, W, V, A
-                if args.plot:
-                    self.t.append(float(n))
-                    if args.debug:
-                        print self.t
-                    self.power.append(W)
-                    self.potential.append(V)
-                    self.current.append(A)
-                    fig.clear()
-                    plt.plot(np.array(self.t)/60,np.array(self.power))
-                    ax = plt.gca()
-                    ax.set_xlabel('Time (minutes)')
-                    ax.set_ylabel('Power (W)')
-                    # show the plot
-                    fig.canvas.draw()
-                if self.logfile:
-                    o.write('%s %d %3.1f %3.1f %5.3f\n' % (datetime.datetime.now(), n, W, V, A))
-                n += self.interval
+                if len(fields)>5:
+                    W = float(fields[3]) / 10;
+                    V = float(fields[4]) / 10;
+                    A = float(fields[5]) / 1000;
+                    screen.clear()
+                    screen.addstr(2, 4, 'Logging to file %s' % self.logfile)
+                    screen.addstr(4, 4, 'Time:     %d s' % n)
+                    screen.addstr(5, 4, 'Power:   %3.1f W' % W)
+                    screen.addstr(6, 4, 'Voltage: %5.1f V' % V)
+                    if A<1000:
+                        screen.addstr(7, 4, 'Current: %d mA' % int(A*1000))
+                    else:
+                        screen.addstr(7, 4, 'Current: %3.3f A' % A)
+                    screen.addstr(9, 4, 'Press "q" to quit ')
+                    #if args.debug:
+                    #    screen.addstr(12, 0, line)
+                    screen.refresh()
+                    c = screen.getch()
+                    if c in (ord('q'), ord('Q')):
+                        break  # Exit the while()
+                    if args.plot:
+                        self.t.append(float(n))
+                        self.power.append(W)
+                        self.potential.append(V)
+                        self.current.append(A)
+                        fig.clear()
+                        plt.plot(np.array(self.t)/60,np.array(self.power),'r')
+                        ax = plt.gca()
+                        ax.set_xlabel('Time (minutes)')
+                        ax.set_ylabel('Power (W)')
+                        # show the plot
+                        fig.canvas.draw()
+                    if self.logfile:
+                        o.write('%s %d %3.1f %3.1f %5.3f\n' % (datetime.datetime.now(), n, W, V, A))
+                    n += self.interval
             line = self.s.readline()
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+        o.close()
 
 
 def main(args):

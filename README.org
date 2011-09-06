@@ -32,13 +32,13 @@ A basic realtime plot can be added to the above with
 Full description of options will be given by
 : wattsup -h
 
-* TODO
-** Fetching data from internal storage is not yet working
-** Plotting is currently very rudimentary.  Some things to add:
-*** Better autoranging
-*** Options for plotting power, current, or both
-*** Cumulative display or plot of energy used
-** A more graceful exit from realtime logging than Control-C would be desirable
+* TO DO
+
+- Fetching data from internal storage is not yet working
+- Plotting is currently very rudimentary.  Some things to add include:
+  - Better autoranging
+  - Options for plotting power, current, or both
+  - Cumulative display or plot of energy used
 
 * LICENSE
 
