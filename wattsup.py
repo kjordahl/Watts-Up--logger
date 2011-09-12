@@ -11,7 +11,7 @@ Usage: wattsup.py
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Sun Sep 11 20:48:22 EDT 2011>
+Time-stamp: <Mon Sep 12 18:52:01 EDT 2011>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -81,6 +81,13 @@ class WattsUp(object):
         if logfile:
             self.logfile = logfile
             o = open(self.logfile,'w')
+        if args.raw:
+            rawfile = '.'.join([os.path.splitext(self.logfile)[0],'raw'])
+            try:
+                r = open(rawfile,'w')
+            except:
+                print 'Opening raw file %s failed!' % rawfile
+                args.raw = False
         line = self.s.readline()
         n = 0
         # set up curses
@@ -98,6 +105,8 @@ class WattsUp(object):
             if args.sim:
                 time.sleep(self.interval)
             if line.startswith( '#d' ):
+                if args.raw:
+                    r.write(line)
                 fields = line.split(',')
                 if len(fields)>5:
                     W = float(fields[3]) / 10;
@@ -138,8 +147,15 @@ class WattsUp(object):
         curses.nocbreak()
         curses.echo()
         curses.endwin()
-        o.close()
-
+        try:
+            o.close()
+        except:
+            pass
+        if args.raw:
+            try:
+                r.close()
+            except:
+                pass
 
 def main(args):
     if not args.port:
@@ -178,6 +194,7 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--fetch', dest='fetch', action='store_true', help='Fetch data stored on the meter (NOT YET WORKING!)')
     parser.add_argument('-g', '--graphics-mode', dest='plot', action='store_true', help='Graphical output: plot the data (NOT YET WORKING!)')
     parser.add_argument('-l', '--log', dest='log', action='store_true', help='log data in real time')
+    parser.add_argument('-r', '--raw', dest='raw', action='store_true', help='output raw file')
     parser.add_argument('-o', '--outfile', dest='outfile', default='log.out', help='Output file')
     parser.add_argument('-s', '--sample-interval', dest='interval', default=1, help='Sample interval (default 1 s)')
     parser.add_argument('-p', '--port', dest='port', default=None, help='USB serial port')
