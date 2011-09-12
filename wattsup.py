@@ -11,7 +11,7 @@ Usage: wattsup.py
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Tue Sep  6 07:26:05 EDT 2011>
+Time-stamp: <Sun Sep 11 20:48:22 EDT 2011>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -28,7 +28,7 @@ Time-stamp: <Tue Sep  6 07:26:05 EDT 2011>
 """
 
 import os, serial
-import datetime
+import datetime, time
 import argparse
 import curses
 from platform import uname
@@ -44,7 +44,10 @@ FULLHANDLING = 2
 
 class WattsUp(object):
     def __init__(self, port, interval):
-        self.s = serial.Serial(port, 115200 )
+        if args.sim:
+            self.s = open(port,'r')     # not a serial port, but a file
+        else:
+            self.s = serial.Serial(port, 115200 )
         self.logfile = None
         self.interval = interval
         # initialize lists for keeping data
@@ -54,11 +57,15 @@ class WattsUp(object):
         self.current = []
 
     def mode(self, runmode):
+        if args.sim:
+            return                      # can't set run mode while in simulation
         self.s.write('#L,W,3,%s,,%d;' % (runmode, self.interval) )
         if runmode == INTERNAL_MODE:
             self.s.write('#O,W,1,%d' % FULLHANDLING)
 
     def fetch(self):
+        if args.sim:
+            return                      # can't fetch while in simulation
         for line in self.s:
             if line.startswith( '#d' ):
                 fields = line.split(',')
@@ -69,7 +76,8 @@ class WattsUp(object):
 
     def log(self, logfile = None):
         print 'Logging...'
-        self.mode(EXTERNAL_MODE)
+        if not args.sim:
+            self.mode(EXTERNAL_MODE)
         if logfile:
             self.logfile = logfile
             o = open(self.logfile,'w')
@@ -87,6 +95,8 @@ class WattsUp(object):
         if args.plot:
             fig = plt.figure()
         while True:
+            if args.sim:
+                time.sleep(self.interval)
             if line.startswith( '#d' ):
                 fields = line.split(',')
                 if len(fields)>5:
@@ -136,16 +146,20 @@ def main(args):
         system = uname()[0]
         if system == 'Darwin':          # Mac OS X
             args.port = '/dev/tty.usbserial-A1000wT3'
-        if system == 'Linux':
+        elif system == 'Linux':
             args.port = '/dev/ttyUSB0'
     if not os.path.exists(args.port):
-        print ''
-        print 'Serial port %s does not exist.' % args.port
-        print 'Please make sure FDTI drivers are installed'
-        print ' (http://www.ftdichip.com/Drivers/VCP.htm)'
-        print 'Default ports are /dev/ttyUSB0 for Linux'
-        print ' and /dev/tty.usbserial-A1000wT3 for Mac OS X'
-        exit()
+        if not args.sim:
+            print ''
+            print 'Serial port %s does not exist.' % args.port
+            print 'Please make sure FDTI drivers are installed'
+            print ' (http://www.ftdichip.com/Drivers/VCP.htm)'
+            print 'Default ports are /dev/ttyUSB0 for Linux'
+            print ' and /dev/tty.usbserial-A1000wT3 for Mac OS X'
+            exit()
+        else:
+            print ''
+            print 'File %s does not exist.' % args.port
     meter = WattsUp(args.port, args.interval)
     if args.log:
         meter.log(args.outfile)
@@ -158,7 +172,8 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get data from Watts Up power meter.')
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='verbose')
-    parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='debuggin output')
+    parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='debugging output')
+    parser.add_argument('-m', '--simulation-mode', dest='sim', action='store_true', help='simulate logging by reading serial data from disk with delay of sample interval between lines')
     parser.add_argument('-i', '--internal-mode', dest='internal', action='store_true', help='Set meter to internal logging mode')
     parser.add_argument('-f', '--fetch', dest='fetch', action='store_true', help='Fetch data stored on the meter (NOT YET WORKING!)')
     parser.add_argument('-g', '--graphics-mode', dest='plot', action='store_true', help='Graphical output: plot the data (NOT YET WORKING!)')
