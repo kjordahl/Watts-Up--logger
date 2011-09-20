@@ -1,17 +1,20 @@
 #!/usr/bin/env python
-"""
-record data from WattsUp power meter
+"""record data from WattsUp power meter
+
+Reads data from a Watts Up PRO or compatible power meter (http://www.wattsupmeters.com).
+Plots in real time, can run in simulation mode, reading from a file rather than
+a physical power meter.
 
 Output format will be space sperated containing:
 YYYY-MM-DD HH:MM:SS.ssssss n W V A
 where n is sample number, W is power in watts, V volts, A current in amps
 
-Usage: wattsup.py
+Usage: "wattsup.py -h" for options
 
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Mon Sep 12 18:52:01 EDT 2011>
+Time-stamp: <Tue Sep 20 09:14:29 EDT 2011>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -192,11 +195,11 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--simulation-mode', dest='sim', action='store_true', help='simulate logging by reading serial data from disk with delay of sample interval between lines')
     parser.add_argument('-i', '--internal-mode', dest='internal', action='store_true', help='Set meter to internal logging mode')
     parser.add_argument('-f', '--fetch', dest='fetch', action='store_true', help='Fetch data stored on the meter (NOT YET WORKING!)')
-    parser.add_argument('-g', '--graphics-mode', dest='plot', action='store_true', help='Graphical output: plot the data (NOT YET WORKING!)')
+    parser.add_argument('-g', '--graphics-mode', dest='plot', action='store_true', help='Graphical output: plot the data in real time')
     parser.add_argument('-l', '--log', dest='log', action='store_true', help='log data in real time')
     parser.add_argument('-r', '--raw', dest='raw', action='store_true', help='output raw file')
     parser.add_argument('-o', '--outfile', dest='outfile', default='log.out', help='Output file')
-    parser.add_argument('-s', '--sample-interval', dest='interval', default=1, help='Sample interval (default 1 s)')
+    parser.add_argument('-s', '--sample-interval', dest='interval', default=1.0, type=float, help='Sample interval (default 1 s)')
     parser.add_argument('-p', '--port', dest='port', default=None, help='USB serial port')
     args = parser.parse_args()
     main(args)

@@ -2,15 +2,16 @@
                                 ======
 
 Author: Kelsey Jordahl
-Date: 2011-09-06 07:29:15 EDT
+Date: 2011-09-20 09:12:41 EDT
 
 
 Table of Contents
 =================
 1 INTRODUCTION 
 2 USAGE 
-3 TO DO 
-4 LICENSE 
+3 FILES 
+4 TO DO 
+5 LICENSE 
 
 
 1 INTRODUCTION 
@@ -56,7 +57,23 @@ wattsup.py -l -g -o sample.log
 Full description of options will be given by
 wattsup -h
 
-3 TO DO 
+3 FILES 
+--------
+
+~wattsup.py~: Program to log, display data to console, and
+                  generate a simple real time plot
+~plot.py~: Simple plotting program for files already logged.
+
+In the ~samples~ subdirectory, there are several raw data logs that
+can be used as sample input with the ~--simulation-mode~ option.  Note
+that they may not be interesting to watch in real time.  These files
+log the data as it comes from the serial port, with the ~--raw~ option.
+~ac.raw~: Sample data from a small window air conditioner
+~fan.raw~: Sample data from a two-motor, 3-speed fan
+~iphone3gs.raw~: Charging an iPhone 3gs
+~iphone4.raw~: Charging an iPhone 4
+
+4 TO DO 
 --------
 
 - Fetching data from internal storage is not yet working
@@ -65,7 +82,7 @@ wattsup -h
   - Options for plotting power, current, or both
   - Cumulative display or plot of energy used
 
-4 LICENSE 
+5 LICENSE 
 ----------
 
 These programs are free software: you can redistribute them and/or
