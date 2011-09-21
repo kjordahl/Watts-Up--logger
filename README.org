@@ -5,8 +5,8 @@ power meter.  Documentation for the serial port interface for the
 meter is available in [[https://www.wattsupmeters.com/secure/downloads/CommunicationsProtocol090824.pdf][this PDF file]].
 
 Other software capable of logging data on the Watts Up? meter are
-available for [[https://www.wattsupmeters.com/secure/support.php][download from watts up?]], and they sell a [[https://orders.wattsupmeters.com/store/home.php?cat=26][realtime version
-for Windows]] for $72.95. One example I found of reading from the Watts
+available for [[https://www.wattsupmeters.com/secure/support.php][download from watts up?]], and they sell a [[https://orders.wattsupmeters.com/store/home.php?cat=26][realtime
+version for Windows]] for $72.95. One example I found of reading from the Watts
 Up? Pro in Python was [[http://www.wattzon.com/forums/posts/80][this script]].
 
 The program will by default assume the most common device name for
