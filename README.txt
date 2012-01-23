@@ -2,7 +2,7 @@
                                 ======
 
 Author: Kelsey Jordahl <kjordahl@pequin.local>
-Date: 2012-01-23 10:20:44 EST
+Date: 2012-01-23 10:22:38 EST
 
 
 Table of Contents
@@ -64,7 +64,7 @@ wattsup -h
                   generate a simple real time plot
 `plot.py': Simple plotting program for files already logged.
 `wattui.py': Experimental [TraitsUI] interface to power meter
-                 logging (only does simulated loggin for now)
+                 logging (only does simulated logging for now)
 
 In the `samples' subdirectory, there are several raw data logs that
 can be used as sample input with the `--simulation-mode' option.  Note
