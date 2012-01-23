@@ -10,7 +10,7 @@ http://github.enthought.com/traitsui/tutorials/traits_ui_scientific_app.html
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Mon Jan 23 10:18:47 EST 2012>
+Time-stamp: <Mon Jan 23 10:35:47 EST 2012>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -80,12 +80,14 @@ class _MPLFigureEditor(Editor):
         sizer.Add(mpl_control, 1, wx.LEFT | wx.TOP | wx.GROW)
         toolbar = NavigationToolbar2Wx(mpl_control)
         sizer.Add(toolbar, 0, wx.EXPAND)
-        self.value.canvas.SetMinSize((400,300))
+        self.value.canvas.SetMinSize((400, 300))
         return panel
+
 
 class MPLFigureEditor(BasicEditorFactory):
 
     klass = _MPLFigureEditor
+
 
 class LoggingThread(Thread):
     def run(self):
@@ -98,13 +100,13 @@ class LoggingThread(Thread):
         p = []
         while not self.wants_abort:
             line = self.s.readline()
-            if line.startswith( '#d' ):
+            if line.startswith('#d'):
                 fields = line.split(',')
-                if len(fields)>5:
-                    W = float(fields[3]) / 10;
+                if len(fields) > 5:
+                    W = float(fields[3]) / 10
                     p.append(W)
-                    V = float(fields[4]) / 10;
-                    A = float(fields[5]) / 1000;
+                    V = float(fields[4]) / 10
+                    A = float(fields[5]) / 1000
                     self.update_data(W, V, A)
                     self.plot_power(p)
                     #print n, W, V, A
@@ -117,26 +119,26 @@ class LoggingThread(Thread):
 
 
 class WattsUp( HasTraits ):
-    
+
     power = Float(0.0,
-                  label = 'Watts',height = -40,
-                  editor = LEDEditor( format_str = '%5.1f') )
+                  label='Watts', height=-40,
+                  editor=LEDEditor(format_str='%5.1f') )
     voltage = Float(0.0,
-                  label = 'Volts',height = -40,
-                  editor = LEDEditor( format_str = '%5.1f') )
+                  label='Volts', height=-40,
+                  editor=LEDEditor(format_str='%5.1f') )
     current = Float(0.0,
-                  label = 'Amps',height = -40,
-                  editor = LEDEditor( format_str = '%5.3f') )
+                  label='Amps', height=-40,
+                  editor=LEDEditor(format_str='%5.3f') )
 
     interval = Int(1,
-                   desc = 'Sample interval in seconds',
-                   label = 'Sample interval (s)')
+                   desc='Sample interval in seconds',
+                   label='Sample interval (s)')
     mode = Enum('Simulated', 'External', 'Internal',
-                desc = 'Meter logging mode',
-                label = 'Mode')
+                desc='Meter logging mode',
+                label='Mode')
     port = String('/dev/tty.usbserial-A1000wT3',
-                  desc = 'Serial port location',
-                  label = 'Serial port')
+                  desc='Serial port location',
+                  label='Serial port')
     button_label = String('Start')
     start = Event
     logging_thread = Instance(LoggingThread)
@@ -151,7 +153,7 @@ class WattsUp( HasTraits ):
         figure = Figure()
         figure.add_axes([0.1, 0.15, 0.5, 0.75])
         return figure
-    
+
     def _start_fired(self):
         if self.logging_thread and self.logging_thread.isAlive():
             self.logging_thread.wants_abort = True
@@ -165,24 +167,26 @@ class WattsUp( HasTraits ):
             self.logging_thread.start()
             self.button_label = 'Stop'
 
-    def plot_power(self,p):
-        t = np.linspace(0,len(p)/60.0,len(p)) # should multiply by interval
+    def plot_power(self, p):
+        t = np.linspace(0, len(p) / 60.0, len(p))  # should multiply by interval
         # print t.size, len(p)
         self.figure.axes[0].clear()
-        self.figure.axes[0].plot(t,p,'r')
+        self.figure.axes[0].plot(t, p, 'r')
         self.figure.axes[0].set_xlabel('Time (minutes)')
         self.figure.axes[0].set_ylabel('Power (W)')
         wx.CallAfter(self.figure.canvas.draw)
 
-    view = View(HSplit(Group(Item('power', height = -40), Item('voltage', height = -40),
-                Item('current', height = -40),
+    view = View(HSplit(Group(Item('power', height=-40),
+                             Item('voltage', height=-40),
+                Item('current', height=-40),
                 'interval', 'mode', 'port',
-                Item('start', label = 'Logging',
-                     editor = ButtonEditor(label_value = 'button_label'))),
+                Item('start', label='Logging',
+                     editor=ButtonEditor(label_value='button_label'))),
                 Item('figure', editor=MPLFigureEditor(),
-                            dock='vertical', height = -400, width = -800,
+                            dock='vertical', height=-400, width=-800,
                             resizable=True),
                             show_labels=False))
+
 
 def main(args):
     WattsUp().configure_traits()
