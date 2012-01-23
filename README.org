@@ -37,6 +37,8 @@ Full description of options will be given by
 - ~wattsup.py~ :: Program to log, display data to console, and
                   generate a simple real time plot
 - ~plot.py~ :: Simple plotting program for files already logged.
+- ~wattui.py~ :: Experimental [[http://code.enthought.com/projects/traits_ui/][TraitsUI]] interface to power meter
+                 logging (only does simulated loggin for now)
 
 In the ~samples~ subdirectory, there are several raw data logs that
 can be used as sample input with the ~--simulation-mode~ option.  Note

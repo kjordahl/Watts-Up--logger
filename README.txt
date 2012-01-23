@@ -1,8 +1,8 @@
                                 README
                                 ======
 
-Author: Kelsey Jordahl
-Date: 2011-09-20 09:12:41 EDT
+Author: Kelsey Jordahl <kjordahl@pequin.local>
+Date: 2012-01-23 10:20:44 EST
 
 
 Table of Contents
@@ -15,7 +15,7 @@ Table of Contents
 
 
 1 INTRODUCTION 
----------------
+~~~~~~~~~~~~~~~
 
 This is a simple Python utility for logging data from a [Watts Up? Pro]
 power meter.  Documentation for the serial port interface for the
@@ -27,7 +27,7 @@ Up? Pro in Python was [this script].
 
 The program will by default assume the most common device name for
 Linux and OS X platforms, but the serial port device can also be
-specified with the command line option ~-p~.
+specified with the command line option `-p'.
 
 The Watts Up? Pro uses an FTDI serial to USB adapter internally.  If
 the driver is not already installed on your operating system, download
@@ -42,12 +42,12 @@ the latest driver from the [FTDI website].
 [FTDI website]: http://www.ftdichip.com/Drivers/VCP.htm
 
 2 USAGE 
---------
+~~~~~~~~
 
 Basic usage from the command line:
 
 To log realtime data at the default sample rate (1 s) to the file
-~sample.log~, use
+`sample.log', use
 wattsup.py -l -o sample.log
 
 A basic realtime plot can be added to the above with
@@ -58,23 +58,28 @@ Full description of options will be given by
 wattsup -h
 
 3 FILES 
---------
+~~~~~~~~
 
-~wattsup.py~: Program to log, display data to console, and
+`wattsup.py': Program to log, display data to console, and
                   generate a simple real time plot
-~plot.py~: Simple plotting program for files already logged.
+`plot.py': Simple plotting program for files already logged.
+`wattui.py': Experimental [TraitsUI] interface to power meter
+                 logging (only does simulated loggin for now)
 
-In the ~samples~ subdirectory, there are several raw data logs that
-can be used as sample input with the ~--simulation-mode~ option.  Note
+In the `samples' subdirectory, there are several raw data logs that
+can be used as sample input with the `--simulation-mode' option.  Note
 that they may not be interesting to watch in real time.  These files
-log the data as it comes from the serial port, with the ~--raw~ option.
-~ac.raw~: Sample data from a small window air conditioner
-~fan.raw~: Sample data from a two-motor, 3-speed fan
-~iphone3gs.raw~: Charging an iPhone 3gs
-~iphone4.raw~: Charging an iPhone 4
+log the data as it comes from the serial port, with the `--raw' option.
+`ac.raw': Sample data from a small window air conditioner
+`fan.raw': Sample data from a two-motor, 3-speed fan
+`iphone3gs.raw': Charging an iPhone 3gs
+`iphone4.raw': Charging an iPhone 4
+
+
+[TraitsUI]: http://code.enthought.com/projects/traits_ui/
 
 4 TO DO 
---------
+~~~~~~~~
 
 - Fetching data from internal storage is not yet working
 - Plotting is currently very rudimentary.  Some things to add include:
@@ -83,7 +88,7 @@ log the data as it comes from the serial port, with the ~--raw~ option.
   - Cumulative display or plot of energy used
 
 5 LICENSE 
-----------
+~~~~~~~~~~
 
 These programs are free software: you can redistribute them and/or
 modify them under the terms of the GNU General Public License as

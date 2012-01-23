@@ -10,7 +10,7 @@ http://github.enthought.com/traitsui/tutorials/traits_ui_scientific_app.html
 Author: Kelsey Jordahl
 Copyright: Kelsey Jordahl 2011
 License: GPLv3
-Time-stamp: <Wed Sep 21 14:18:26 EDT 2011>
+Time-stamp: <Mon Jan 23 10:18:47 EST 2012>
 
     This program is free software: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -25,6 +25,9 @@ Time-stamp: <Wed Sep 21 14:18:26 EDT 2011>
     GNU General Public License for more details.
 
 """
+
+# file to read as simulated serial port data
+SIMFILE = 'samples/iphone4.raw'
 
 import os, serial
 import datetime, time
@@ -87,7 +90,7 @@ class MPLFigureEditor(BasicEditorFactory):
 class LoggingThread(Thread):
     def run(self):
         if SIM:
-            self.s = open('samples/iphone4.raw','r')     # not a serial port, but a file
+            self.s = open(SIMFILE, 'r')     # not a serial port, but a file
         else:
             self.s = serial.Serial(port, 115200 )
         print 'Logging started\n'
@@ -128,7 +131,7 @@ class WattsUp( HasTraits ):
     interval = Int(1,
                    desc = 'Sample interval in seconds',
                    label = 'Sample interval (s)')
-    mode = Enum('External', 'Internal',
+    mode = Enum('Simulated', 'External', 'Internal',
                 desc = 'Meter logging mode',
                 label = 'Mode')
     port = String('/dev/tty.usbserial-A1000wT3',
