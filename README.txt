@@ -60,6 +60,7 @@ wattsup -h
 3 FILES 
 ~~~~~~~~
 
+`CommunicationsProtocol090824.pdf': Serial Data Format Revision: 1.8
 `wattsup.py': Program to log, display data to console, and
                   generate a simple real time plot
 `plot.py': Simple plotting program for files already logged.
